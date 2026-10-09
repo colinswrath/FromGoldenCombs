@@ -100,7 +100,11 @@ namespace FromGoldenCombs.BlockEntities
                 {
                     testHarvestableListener = RegisterGameTickListener(TestHarvestable, 5000);
                     scanForFlowersListener = RegisterGameTickListener(OnScanForFlowers, Api.World.Rand.Next(5000) + 30000);
-                    cooldownUntilTotalHours = Api.World.Calendar.TotalHours + 8;
+
+                    if (cooldownUntilTotalHours <= 0)
+                    {
+                        cooldownUntilTotalHours = Api.World.Calendar.TotalHours + 8;
+                    }
                 }
                 MarkDirty();
             }
@@ -469,7 +473,6 @@ namespace FromGoldenCombs.BlockEntities
 
             if (isActiveHive)
             {
-
                 Room room = roomreg?.GetRoomForPosition(Pos);
                 roomness = (room != null && room.SkylightCount > room.NonSkylightCount && room.ExitCount == 0) ? 1 : 0;
                 
@@ -841,6 +844,8 @@ namespace FromGoldenCombs.BlockEntities
         public override void OnBlockUnloaded()
         {
             base.OnBlockUnloaded();
+
+
             if (Api?.Side == EnumAppSide.Server)
             {
                 Api.ModLoader.GetModSystem<FromGoldenCombs>().OnPollination -= OnPollinationNearby;
