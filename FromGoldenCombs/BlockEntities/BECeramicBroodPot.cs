@@ -844,8 +844,6 @@ namespace FromGoldenCombs.BlockEntities
         public override void OnBlockUnloaded()
         {
             base.OnBlockUnloaded();
-
-
             if (Api?.Side == EnumAppSide.Server)
             {
                 Api.ModLoader.GetModSystem<FromGoldenCombs>().OnPollination -= OnPollinationNearby;
